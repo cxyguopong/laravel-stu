@@ -181,5 +181,23 @@
 
             </div>
         </div>
+        <script src="/js/app.js"></script>
+        <script>
+        $(function(){
+            var $form = $('form');    
+            $form.submit(function(){
+                var action = this.action;
+                $.post(action, $form.serialize()).done(function(res){
+                    console.log("res : ",res);    
+                })
+                .fail(function(res){
+                    console.log('res:', res.responseJSON);
+                })
+
+                return false;
+            })
+        })
+        </script>
+
     </body>
 </html>

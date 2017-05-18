@@ -11,6 +11,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+use App\Http\Requests\RegisterPost;
+
 class HomeController extends Controller {
 
 	public function index(Request $req) {
@@ -74,19 +76,9 @@ class HomeController extends Controller {
         return view('home/form');
     }
 
-    public function formpost(Request $req) {
-        $this->validate($req,
-            [
-                'username' => 'bail|required|min:3',
-                'password' => 'bail|required|min:6',
-                'age' => 'bail|integer|min:15|max:100|nullable',
-            ]
-        );
-
-        return "congratulation , Verification by !";
+    public function formpost(RegisterPost $req) {
+        return $req->except('_token');
     }
-
-
 
     public function response(Request $req){
 
@@ -121,12 +113,6 @@ class HomeController extends Controller {
         }    
     }
 
-    protected function formatValidationErrors(Validator $validator)
-    {
-        $result = $validator->errors()->getMessages();
-        var_dump($result);exit;
-        return $validator->errors()->all();
-    }
 
 
     //public function four()
