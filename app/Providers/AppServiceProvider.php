@@ -14,7 +14,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 		\View::share('approotkey', 'ni ya shi kakaxi');
-        //
+
+		$this->app->when(\App\Http\Controllers\HomeController::class)
+            ->needs('sami')
+            ->give("daughter");
     }
 
     /**

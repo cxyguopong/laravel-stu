@@ -26,7 +26,20 @@ Route::group(['prefix'=>'home'], function(){
     Route::get('response', $controllerPrefix."response");
     Route::get('profile', $controllerPrefix."profile");
     Route::get('session', $controllerPrefix."session");
+    Route::get('ctvar', $controllerPrefix."ctvar");
+
+    Route::get('/cache', function(){
+
+        return Cache::get('key');
+    });
 });
 
 Route::get('/common/index', 'CommonController@index')->name('common');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
 

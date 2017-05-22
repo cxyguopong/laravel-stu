@@ -113,7 +113,17 @@ class HomeController extends Controller {
         }    
     }
 
+    public $sami;
+    public function ctvar(\App\Student $student){
+        $student2 =  \App::make(\App\Student::class);
+        $student3 = resolve(\App\Student::class);
+        echo "<pre>";
+        var_dump('is singlegon : ' . ($student === $student2 ? 'yes' : 'no') );
 
+        echo "school : ".$student2->school;
+        echo "<br>";
+        echo $student3->school;
+    }
 
     //public function four()
 }
