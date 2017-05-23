@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -13,24 +13,30 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 
 use App\Http\Requests\RegisterPost;
 
-class HomeController extends Controller {
+use App\Events\OrderShipped;
 
-	public function index(Request $req) {
-		echo $req->path();	
+class HomeController extends Controller
+{
+
+    public function index(Request $req)
+    {
+        echo $req->path();
         echo "<br>";
-        var_dump($req->is("home/"));		
-		exit;
-	}
+        var_dump($req->is("home/"));
+        exit;
+    }
 
-    public function two(Request $req) {
+    public function two(Request $req)
+    {
         echo "path : " . $req->path();
-        echo "<br>";    
+        echo "<br>";
         var_dump($req->is("home/*/*/"));
     }
 
-    public function three(Request $req, $id=null) {
+    public function three(Request $req, $id = null)
+    {
         echo "id : " . $id;
-        echo "<br>"; 
+        echo "<br>";
         echo 'current url : ' . $req->url();
         echo "<br>";
         echo "fullfil current url : " . $req->fullUrl();
@@ -46,14 +52,14 @@ class HomeController extends Controller {
         echo nl2br("\n\n------------ user input -------------\n");
         print_r($req->all());
         echo nl2br("\n");
-        echo "sex : ". $req->input('sex');
+        echo "sex : " . $req->input('sex');
         echo nl2br("\n");
-        echo "halo : ". $req->input('halo', 'default(suck blood)');
+        echo "halo : " . $req->input('halo', 'default(suck blood)');
         echo "<br>";
-        echo "index 0 of love : ". $req->input('love.0');
+        echo "index 0 of love : " . $req->input('love.0');
 
         echo "<br>";
-        echo "index 0 name of elder : ". $req->input('elder.0.degree');
+        echo "index 0 name of elder : " . $req->input('elder.0.degree');
 
         echo "<br><br>use input only and except:<br>";
         $input = $req->only(['name', 'sex', 'non-existent']);
@@ -70,32 +76,38 @@ class HomeController extends Controller {
         var_dump($req->has('age'));
     }
 
-    public function form(Request $req, Response $res){
-        
+    public function form(Request $req, Response $res)
+    {
+
         //return response("hello form !")->cookie("name", "feiyuqing", 30);   
         return view('home/form');
     }
 
-    public function formpost(RegisterPost $req) {
+    public function formpost(RegisterPost $req)
+    {
         return $req->except('_token');
     }
 
-    public function response(Request $req){
+    public function response(Request $req)
+    {
 
         return response()
             ->json(['name' => 'Abigail', 'state' => 'CA'])
             ->setCallback('abcde');
     }
 
-    public function response1(Request $req){
+    public function response1(Request $req)
+    {
         //exit('is response1, session value:'.$req->status);    
     }
 
-    public function profile() {
-        return view('profile');    
+    public function profile()
+    {
+        return view('profile');
     }
 
-    public function session(Request $req){
+    public function session(Request $req)
+    {
         $sess = session();
         if ($sess->has('my_status')) {
             $count = $sess->get('count');
@@ -104,25 +116,46 @@ class HomeController extends Controller {
             }
 
             $sess->put('count', --$count);
-            $str = "last written cookie is : <b>".$sess->get('my_status'). '</b> The number of effective left : <b>' . $count ."</b>"; 
+            $str = "last written cookie is : <b>" . $sess->get('my_status') . '</b> The number of effective left : <b>' . $count . "</b>";
             return response($str);
         } else {
-            $sess->flash('my_status', 'Task was successful!');  
+            $sess->flash('my_status', 'Task was successful!');
             $sess->put('count', 5);
             return response('writing to session named my_status!');
-        }    
+        }
     }
 
     public $sami;
-    public function ctvar(\App\Student $student){
-        $student2 =  \App::make(\App\Student::class);
+
+    public function ctvar(\App\Student $student)
+    {
+
+        echo \App\User::count();
+        exit;
+
+        $student2 = \App::make(\App\Student::class);
         $student3 = resolve(\App\Student::class);
         echo "<pre>";
-        var_dump('is singlegon : ' . ($student === $student2 ? 'yes' : 'no') );
+        var_dump('is singlegon : ' . ($student === $student2 ? 'yes' : 'no'));
 
-        echo "school : ".$student2->school;
+        echo "school : " . $student2->school;
         echo "<br>";
         echo $student3->school;
+    }
+
+    public function cli()
+    {
+//        \Artisan::queue('email:send', [
+//            'user' => 1, '--queue' => 'default'
+//        ]);
+        echo "kakaxi";
+
+    }
+
+    public function event()
+    {
+        //$order = Order
+        event(new OrderShipped(array('status' => 'success', 'info' => 'ni ya shi kakaxi!')));
     }
 
     //public function four()

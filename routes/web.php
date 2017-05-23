@@ -32,6 +32,10 @@ Route::group(['prefix'=>'home'], function(){
 
         return Cache::get('key');
     });
+
+    Route::get("cli", $controllerPrefix."cli");
+
+    Route::get('event', $controllerPrefix."event");
 });
 
 Route::get('/common/index', 'CommonController@index')->name('common');
