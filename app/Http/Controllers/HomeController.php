@@ -13,6 +13,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 
 use App\Http\Requests\RegisterPost;
 
+use App\Jobs\TestQueueFirst;
+use App\Jobs\SendReminderEmail;
+
 use App\Events\OrderShipped;
 
 class HomeController extends Controller
@@ -153,12 +156,35 @@ class HomeController extends Controller
     }
 
     public function event()
-    {
+    {   
+        $this->info = array('name'=>'kaaxi', 'info'=>"zhang");
         //$order = Order
 
-        event(new OrderShipped(array('status' => 'success', 'info' => 'ni ya shi kakaxi!')));
-    
+        //event(new OrderShipped(array('status' => 'success', 'info' => 'ni ya shi kakaxi!')));
+        file_put_contents('D:/laravel-test-data/queue/'. date('Y-m-d His') . ' ' . $this->info['name'].'.txt', $this->info['info']. "\ntime is : ". date('Y/m/d H:i:s'));
+
     }
 
+    public function queue(){
+//        $nameprefix = "";
+//        for ($i = 0; ++$i<=8;) {
+//            $nameprefix .= chr(mt_rand(0,25) + 65);
+//        }
+//        for ($i = 0; ++$i<=500;) {
+//            $job = (new \App\Jobs\SendReminderEmail(['name'=>$nameprefix .'-'. $i, 'info'=>'hello world ']))->delay(\Carbon\Carbon::now()->addSeconds($i*30));
+//            dispatch($job);
+//        }
+
+
+        $info = [
+            'name'=>'regex dog',
+            'info'=>"I'm job1 queue"
+        ];
+
+        $job = (new TestQueueFirst($info))->delay(2)->onQueue('job1test');
+        dispatch($job);
+
+        echo "test a queue task;";
+    }
     //public function four()
 }
