@@ -36,6 +36,7 @@ Route::group(['prefix'=>'home'], function(){
     Route::get("cli", $controllerPrefix."cli");
 
     Route::get('event', $controllerPrefix."event");
+    Route::get('queue', $controllerPrefix."queue");
 });
 
 Route::get('/common/index', 'CommonController@index')->name('common');
