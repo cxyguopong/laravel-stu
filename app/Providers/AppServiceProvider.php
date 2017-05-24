@@ -13,6 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \Schema::defaultStringLength(191);
+
 		\View::share('approotkey', 'ni ya shi kakaxi');
 
 		$this->app->when(\App\Http\Controllers\HomeController::class)

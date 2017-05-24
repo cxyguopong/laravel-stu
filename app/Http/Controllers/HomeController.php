@@ -155,7 +155,9 @@ class HomeController extends Controller
     public function event()
     {
         //$order = Order
+
         event(new OrderShipped(array('status' => 'success', 'info' => 'ni ya shi kakaxi!')));
+    
     }
 
     //public function four()

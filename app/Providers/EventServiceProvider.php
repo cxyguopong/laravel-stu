@@ -24,6 +24,15 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
+     * 需要注册的订阅者类
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        \App\Listeners\UserEventSubscriber::class,
+    ];
+
+    /**
      * Register any events for your application.
      *
      * @return void
@@ -34,4 +43,6 @@ class EventServiceProvider extends ServiceProvider
 
         //
     }
+
+    
 }
